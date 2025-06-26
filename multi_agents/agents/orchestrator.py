@@ -13,7 +13,8 @@ from . import \
     EditorAgent, \
     PublisherAgent, \
     ResearchAgent, \
-    HumanAgent
+    HumanAgent, \
+    TranslatorAgent
 
 
 class ChiefEditorAgent:
@@ -46,7 +47,8 @@ class ChiefEditorAgent:
             "editor": EditorAgent(self.websocket, self.stream_output, self.tone, self.headers),
             "research": ResearchAgent(self.websocket, self.stream_output, self.tone, self.headers),
             "publisher": PublisherAgent(self.output_dir, self.websocket, self.stream_output, self.headers),
-            "human": HumanAgent(self.websocket, self.stream_output, self.headers)
+            "human": HumanAgent(self.websocket, self.stream_output, self.headers),
+            "translator": TranslatorAgent(self.websocket, self.stream_output, self.headers)
         }
 
     def _create_workflow(self, agents):
@@ -57,6 +59,7 @@ class ChiefEditorAgent:
         workflow.add_node("planner", agents["editor"].plan_research)
         workflow.add_node("researcher", agents["editor"].run_parallel_research)
         workflow.add_node("writer", agents["writer"].run)
+        workflow.add_node("translator", agents["translator"].run)
         workflow.add_node("publisher", agents["publisher"].run)
         workflow.add_node("human", agents["human"].review_plan)
 
@@ -69,7 +72,8 @@ class ChiefEditorAgent:
         workflow.add_edge('browser', 'planner')
         workflow.add_edge('planner', 'human')
         workflow.add_edge('researcher', 'writer')
-        workflow.add_edge('writer', 'publisher')
+        workflow.add_edge('writer', 'translator')
+        workflow.add_edge('translator', 'publisher')
         workflow.set_entry_point("browser")
         workflow.add_edge('publisher', END)
 

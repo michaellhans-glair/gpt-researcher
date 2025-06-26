@@ -11,7 +11,7 @@ An average run generates a 5-6 page research report in multiple formats such as 
 Please note: Multi-agents are utilizing the same configuration of models like GPT-Researcher does. However, only the SMART_LLM is used for the time being. Please refer to the [LLM config pages](https://docs.gptr.dev/docs/gpt-researcher/llms/llms).
 
 ## The Multi Agent Team
-The research team is made up of 8 agents:
+The research team is made up of 9 agents:
 - **Human** - The human in the loop that oversees the process and provides feedback to the agents.
 - **Chief Editor** - Oversees the research process and manages the team. This is the "master" agent that coordinates the other agents using Langgraph.
 - **Researcher** (gpt-researcher) - A specialized autonomous agent that conducts in depth research on a given topic.
@@ -19,6 +19,7 @@ The research team is made up of 8 agents:
 - **Reviewer** - Validates the correctness of the research results given a set of criteria.
 - **Revisor** - Revises the research results based on the feedback from the reviewer.
 - **Writer** - Responsible for compiling and writing the final report.
+- **Translator** - Translates the final research report into Indonesian language (optional).
 - **Publisher** - Responsible for publishing the final report in various formats.
 
 ## How it works
@@ -27,7 +28,8 @@ Generally, the process is based on the following stages:
 2. Data collection and analysis
 3. Review and revision
 4. Writing and submission
-5. Publication
+5. Translation (optional)
+6. Publication
 
 ### Architecture
 <div align="center">
@@ -44,6 +46,7 @@ More specifically (as seen in the architecture diagram) the process is as follow
   - Reviewer - Validates the correctness of the draft given a set of criteria and provides feedback.
   - Revisor - Revises the draft until it is satisfactory based on the reviewer feedback.
 - Writer - Compiles and writes the final report including an introduction, conclusion and references section from the given research findings.
+- Translator - Translates the final report into Indonesian language (if enabled).
 - Publisher - Publishes the final report to multi formats such as PDF, Docx, Markdown, etc.
 
 ## How to run
@@ -65,6 +68,7 @@ To change the research query and customize the report, edit the `task.json` file
 - `model` - The OpenAI LLM to use for the agents.
 - `max_sections` - The maximum number of sections in the report. Each section is a subtopic of the research query.
 - `include_human_feedback` - If true, the user can provide feedback to the agents. If false, the agents will work autonomously.
+- `translate_to_indonesian` - If true, the final report will be translated to Indonesian language. If false, translation will be skipped.
 - `publish_formats` - The formats to publish the report in. The reports will be written in the `output` directory.
 - `source` - The location from which to conduct the research. Options: `web` or `local`. For local, please add `DOC_PATH` env var.
 - `follow_guidelines` - If true, the research report will follow the guidelines below. It will take longer to complete. If false, the report will be generated faster but may not follow the guidelines.
@@ -83,6 +87,7 @@ To change the research query and customize the report, edit the `task.json` file
     "docx": true
   },
   "include_human_feedback": false,
+  "translate_to_indonesian": true,
   "source": "web",
   "follow_guidelines": true,
   "guidelines": [
