@@ -165,7 +165,7 @@ class GPTResearcher:
         self.scraper_manager: BrowserManager = BrowserManager(self)
         self.source_curator: SourceCurator = SourceCurator(self)
         self.deep_researcher: Optional[DeepResearchSkill] = None
-        if report_type == ReportType.DeepResearch.value:
+        if report_type == ReportType.DeepResearch.value or report_type == ReportType.DeepResearchSubtopicReport.value:
             self.deep_researcher = DeepResearchSkill(self)
 
         # Handle MCP strategy configuration with backwards compatibility
@@ -295,7 +295,7 @@ class GPTResearcher:
         })
 
         # Handle deep research separately
-        if self.report_type == ReportType.DeepResearch.value and self.deep_researcher:
+        if (self.report_type == ReportType.DeepResearch.value or self.report_type == ReportType.DeepResearchSubtopicReport.value) and self.deep_researcher:
             return await self._handle_deep_research(on_progress)
 
         if not (self.agent and self.role):

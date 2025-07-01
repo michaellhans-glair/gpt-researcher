@@ -391,6 +391,112 @@ Assume the current date is {datetime.now(timezone.utc).strftime('%B %d, %Y')}.
 """
 
     @staticmethod
+    def generate_deep_research_subtopic_report_prompt(
+        current_subtopic,
+        existing_headers: list,
+        relevant_written_contents: list,
+        main_topic: str,
+        context,
+        report_format: str = "apa",
+        max_subsections=5,
+        total_words=1200,
+        tone: Tone = Tone.Objective,
+        language: str = "english",
+    ) -> str:
+        """Generates the deep research subtopic report prompt, combining deep research methodology with subtopic structure.
+        Args:
+            current_subtopic (str): The current subtopic being researched
+            existing_headers (list): List of existing headers from previous reports
+            relevant_written_contents (list): List of relevant written contents from previous reports
+            main_topic (str): The main research topic
+            context (str): The research context containing deep research findings with citations
+            report_format (str): Report formatting style
+            max_subsections (int): Maximum number of subsections
+            total_words (int): Minimum word count
+            tone: The tone to use in writing
+            language (str): Output language
+        Returns:
+            str: The deep research subtopic report prompt
+        """
+        return f"""
+Context (Deep Research Findings):
+"{context}"
+
+Main Topic and Subtopic:
+Using the latest deep research information available, construct a comprehensive report on the subtopic: {current_subtopic} under the main topic: {main_topic}.
+You must limit the number of subsections to a maximum of {max_subsections}.
+
+Deep Research Methodology Focus:
+- This report is based on deep research methodology that explores topics with unprecedented depth and breadth
+- The research includes multiple levels of investigation, from foundational concepts to advanced insights
+- Information has been gathered through recursive exploration with both breadth (multiple parallel research paths) and depth (sequential iterations)
+- The context contains hierarchically researched information with proper citations from various research branches
+
+Content Focus:
+- The report should synthesize information from multiple levels of research depth
+- Integrate findings from various research branches into a coherent narrative
+- Present insights that emerged from deeper levels of research
+- Highlight connections between different research branches
+- Be well-structured, informative, in-depth, and include facts and numbers if available
+- Use markdown syntax and follow the {report_format.upper()} format
+- When presenting data, comparisons, or structured information, use markdown tables to enhance readability
+
+IMPORTANT: Content and Sections Uniqueness:
+- This part of the instructions is crucial to ensure the content is unique and does not overlap with existing reports
+- Carefully review the existing headers and existing written contents provided below before writing any new subsections
+- Prevent any content that is already covered in the existing written contents
+- Do not use any of the existing headers as the new subsection headers
+- Do not repeat any information already covered in the existing written contents or closely related variations to avoid duplicates
+- If you have nested subsections, ensure they are unique and not covered in the existing written contents
+- Ensure that your content is entirely new and does not overlap with any information already covered in the previous subtopic reports
+
+"Existing Subtopic Reports":
+- Existing subtopic reports and their section headers:
+
+    {existing_headers}
+
+- Existing written contents from previous subtopic reports:
+
+    {relevant_written_contents}
+
+"Structure and Formatting":
+- As this sub-report will be part of a larger report, include only the main body divided into suitable subtopics without any introduction or conclusion section
+- You MUST include markdown hyperlinks to relevant source URLs wherever referenced in the report, for example:
+
+    ### Section Header
+
+    This is a sample text ([in-text citation](url)).
+
+- Use H2 for the main subtopic header (##) and H3 for subsections (###)
+- Use smaller Markdown headers (e.g., H2 or H3) for content structure, avoiding the largest header (H1) as it will be used for the larger report's heading
+- Organize your content into distinct sections that complement but do not overlap with existing reports
+- When adding similar or identical subsections to your report, you should clearly indicate the differences between the new content and the existing written content from previous subtopic reports. For example:
+
+    ### New header (similar to existing header)
+
+    While the previous section discussed [topic A], this section will explore [topic B]."
+
+"Date":
+Assume the current date is {datetime.now(timezone.utc).strftime('%B %d, %Y')} if required.
+
+"IMPORTANT!":
+- You MUST write the report in the following language: {language}
+- The focus MUST be on the main topic! You MUST Leave out any information un-related to it!
+- Must NOT have any introduction, conclusion, summary or reference section
+- You MUST use in-text citation references in {report_format.upper()} format and make it with markdown hyperlink placed at the end of the sentence or paragraph that references them like this: ([in-text citation](url))
+- You MUST mention the difference between the existing content and the new content in the report if you are adding the similar or same subsections wherever necessary
+- The report should have a minimum length of {total_words} words
+- Use an {tone.value} tone throughout the report
+- Prioritize insights that emerged from deeper levels of research
+- Include relevant statistics, data, and concrete examples from the deep research findings
+- You MUST determine your own concrete and valid opinion based on the given information. Do NOT defer to general and meaningless conclusions
+- You MUST prioritize the relevance, reliability, and significance of the sources you use. Choose trusted sources over less reliable ones
+- You must also prioritize new articles over older articles if the source can be trusted
+
+Do NOT add a conclusion section.
+"""
+
+    @staticmethod
     def auto_agent_instructions():
         return """
 This task involves researching a given topic, regardless of its complexity or the availability of a definitive answer. The research is conducted by a specific server, defined by its type and role, with each server requiring distinct instructions.
@@ -737,6 +843,7 @@ report_type_mapping = {
     ReportType.CustomReport.value: "generate_custom_report_prompt",
     ReportType.SubtopicReport.value: "generate_subtopic_report_prompt",
     ReportType.DeepResearch.value: "generate_deep_research_prompt",
+    ReportType.DeepResearchSubtopicReport.value: "generate_deep_research_subtopic_report_prompt",
 }
 
 

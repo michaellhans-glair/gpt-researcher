@@ -52,7 +52,8 @@ report_type_descriptions = {
     ReportType.OutlineReport.value: "",
     ReportType.CustomReport.value: "",
     ReportType.SubtopicReport.value: "",
-    ReportType.DeepResearch.value: "Deep Research"
+    ReportType.DeepResearch.value: "Deep Research",
+    ReportType.DeepResearchSubtopicReport.value: ""
 }
 
 cli.add_argument(

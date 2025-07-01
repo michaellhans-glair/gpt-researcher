@@ -72,6 +72,13 @@ class ReportGenerator:
                 "relevant_written_contents": relevant_written_contents,
                 "cost_callback": self.researcher.add_costs,
             })
+        elif self.researcher.report_type == "deep_research_subtopic_report":
+            report_params.update({
+                "main_topic": self.researcher.parent_query,
+                "existing_headers": existing_headers,
+                "relevant_written_contents": relevant_written_contents,
+                "cost_callback": self.researcher.add_costs,
+            })
         else:
             report_params["cost_callback"] = self.researcher.add_costs
 
