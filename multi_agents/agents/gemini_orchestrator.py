@@ -12,12 +12,12 @@ from . import \
     WriterAgent, \
     GeminiEditorAgent, \
     PublisherAgent, \
-    GeminiResearcherAgent, \
+    GeminiResearchAgent, \
     HumanAgent
 
 
 class GeminiChiefEditorAgent:
-    """Agent responsible for managing and coordinating editing tasks using Gemini for research."""
+    """Agent responsible for managing and coordinating editing tasks."""
 
     def __init__(self, task: dict, websocket=None, stream_output=None, tone=None, headers=None):
         self.task = task
@@ -44,7 +44,7 @@ class GeminiChiefEditorAgent:
         return {
             "writer": WriterAgent(self.websocket, self.stream_output, self.headers),
             "editor": GeminiEditorAgent(self.websocket, self.stream_output, self.tone, self.headers),
-            "research": GeminiResearcherAgent(self.websocket, self.stream_output, self.tone, self.headers),
+            "research": GeminiResearchAgent(self.websocket, self.stream_output, self.tone, self.headers),
             "publisher": PublisherAgent(self.output_dir, self.websocket, self.stream_output, self.headers),
             "human": HumanAgent(self.websocket, self.stream_output, self.headers)
         }
@@ -81,20 +81,20 @@ class GeminiChiefEditorAgent:
         )
 
     def init_research_team(self):
-        """Initialize and create a workflow for the research team using Gemini."""
+        """Initialize and create a workflow for the research team."""
         agents = self._initialize_agents()
         return self._create_workflow(agents)
 
     async def _log_research_start(self):
-        message = f"Starting the Gemini research process for query '{self.task.get('query')}'..."
+        message = f"Starting the Gemini-powered research process for query '{self.task.get('query')}'..."
         if self.websocket and self.stream_output:
-            await self.stream_output("logs", "starting_gemini_research", message, self.websocket)
+            await self.stream_output("logs", "starting_research", message, self.websocket)
         else:
             print_agent_output(message, "GEMINI_MASTER")
 
     async def run_research_task(self, task_id=None):
         """
-        Run a research task with the initialized research team using Gemini.
+        Run a research task with the initialized research team.
 
         Args:
             task_id (optional): The ID of the task to run.
@@ -115,4 +115,4 @@ class GeminiChiefEditorAgent:
         }
 
         result = await chain.ainvoke({"task": self.task}, config=config)
-        return result 
+        return result

@@ -1,5 +1,5 @@
 from .researcher import ResearchAgent
-from .gemini_researcher import GeminiResearcherAgent
+from .gemini_researcher import GeminiResearchAgent
 from .writer import WriterAgent
 from .publisher import PublisherAgent
 from .reviser import ReviserAgent
@@ -15,7 +15,7 @@ from .gemini_orchestrator import GeminiChiefEditorAgent
 __all__ = [
     "ChiefEditorAgent",
     "ResearchAgent",
-    "GeminiResearcherAgent",
+    "GeminiResearchAgent",
     "WriterAgent",
     "EditorAgent",
     "GeminiEditorAgent",

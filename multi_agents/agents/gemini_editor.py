@@ -7,11 +7,11 @@ from langgraph.graph import StateGraph, END
 from .utils.views import print_agent_output
 from .utils.llms import call_model
 from ..memory.draft import DraftState
-from . import GeminiResearcherAgent, ReviewerAgent, ReviserAgent
+from . import GeminiResearchAgent, ReviewerAgent, ReviserAgent
 
 
 class GeminiEditorAgent:
-    """Agent responsible for editing and managing research using Gemini capabilities."""
+    """Agent responsible for editing and managing code using Gemini-powered research."""
 
     def __init__(self, websocket=None, stream_output=None, tone=None, headers=None):
         self.websocket = websocket
@@ -21,7 +21,7 @@ class GeminiEditorAgent:
 
     async def plan_research(self, research_state: Dict[str, any]) -> Dict[str, any]:
         """
-        Plan the research outline based on initial research and task parameters using Gemini.
+        Plan the research outline based on initial research and task parameters.
 
         :param research_state: Dictionary containing research state information
         :return: Dictionary with title, date, and planned sections
@@ -51,7 +51,7 @@ class GeminiEditorAgent:
 
     async def run_parallel_research(self, research_state: Dict[str, any]) -> Dict[str, List[str]]:
         """
-        Execute parallel research tasks for each section using Gemini.
+        Execute parallel research tasks for each section using Gemini-powered research.
 
         :param research_state: Dictionary containing research state information
         :return: Dictionary with research results
@@ -78,13 +78,13 @@ class GeminiEditorAgent:
 
     def _create_planning_prompt(self, initial_research: str, include_human_feedback: bool,
                                 human_feedback: Optional[str], max_sections: int) -> List[Dict[str, str]]:
-        """Create the prompt for research planning with Gemini capabilities."""
+        """Create the prompt for research planning."""
         return [
             {
                 "role": "system",
-                "content": "You are a research editor using Gemini's advanced capabilities. Your goal is to oversee the research project "
+                "content": "You are a research editor. Your goal is to oversee the research project "
                            "from inception to completion. Your main task is to plan the article section "
-                           "layout based on an initial research summary using Gemini's enhanced search and reasoning capabilities.\n ",
+                           "layout based on an initial research summary.\n ",
             },
             {
                 "role": "user",
@@ -95,7 +95,7 @@ class GeminiEditorAgent:
 
     def _format_planning_instructions(self, initial_research: str, include_human_feedback: bool,
                                       human_feedback: Optional[str], max_sections: int) -> str:
-        """Format the instructions for research planning with Gemini."""
+        """Format the instructions for research planning."""
         today = datetime.now().strftime('%d/%m/%Y')
         feedback_instruction = (
             f"Human feedback: {human_feedback}. You must plan the sections based on the human feedback."
@@ -104,10 +104,10 @@ class GeminiEditorAgent:
         )
 
         return f"""Today's date is {today}
-                   Research summary report (using Gemini): '{initial_research}'
+                   Research summary report: '{initial_research}'
                    {feedback_instruction}
                    \nYour task is to generate an outline of sections headers for the research project
-                   based on the Gemini research summary report above.
+                   based on the research summary report above.
                    You must generate a maximum of {max_sections} section headers.
                    You must focus ONLY on related research topics for subheaders and do NOT include introduction, conclusion and references.
                    You must return nothing but a JSON with the fields 'title' (str) and 
@@ -118,13 +118,13 @@ class GeminiEditorAgent:
     def _initialize_agents(self) -> Dict[str, any]:
         """Initialize the Gemini research, reviewer, and reviser skills."""
         return {
-            "research": GeminiResearcherAgent(self.websocket, self.stream_output, self.tone, self.headers),
+            "research": GeminiResearchAgent(self.websocket, self.stream_output, self.tone, self.headers),
             "reviewer": ReviewerAgent(self.websocket, self.stream_output, self.headers),
             "reviser": ReviserAgent(self.websocket, self.stream_output, self.headers),
         }
 
     def _create_workflow(self) -> StateGraph:
-        """Create the workflow for the Gemini research process."""
+        """Create the workflow for the Gemini-powered research process."""
         agents = self._initialize_agents()
         workflow = StateGraph(DraftState)
 
@@ -148,7 +148,7 @@ class GeminiEditorAgent:
         if self.websocket and self.stream_output:
             asyncio.create_task(self.stream_output(
                 "logs",
-                "parallel_gemini_research",
+                "parallel_research",
                 f"Running parallel Gemini research for the following queries: {queries}",
                 self.websocket,
             ))
@@ -165,4 +165,4 @@ class GeminiEditorAgent:
             "topic": query,
             "title": title,
             "headers": self.headers,
-        } 
+        }
