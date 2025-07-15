@@ -1,0 +1,15 @@
+{
+  "query": "You are an advanced AI assistant with expertise in boat investment opportunities in Bali and Labuan Bajo. Please answer the following questions:\n1. Which vessels offer private-chef service and depart Labuan Bajo on weekends?\n2. List boats under USD 2000 per day that still have slots next month.\n3. Rank the top five yachts by star rating and show their day-rates.\n4. Summarise the three most common complaints in 5-star reviews.\n5. What does demand look like throughout the year in Labuan Bajo? (e.g. peak season vs low season, tourist arrival trends, key holidays or events that spike demand).\n6. Describe the ideal luxury customer persona for a one-day yacht charter.\n7. What are the fixed and variable costs of running a luxury yacht charter, and how do they translate into a minimum viable price? (e.g. daily operating cost and break-even price for a charter).\n8. What is the break-even day-rate for a Saxdor 320, given fuel and crew costs?\n9. Provide a SWOT analysis comparing us to The Trans Luxury Yacht.\n10. Which five-star resorts in Labuan Bajo are the best partnership targets?",
+  "publish_formats": {
+    "markdown": true,
+    "pdf": true,
+    "docx": false
+  },
+  "model": "gpt-4o",
+  "guidelines": [
+    "The report must exactly answer what user asks and to the point",
+    "Each sub section MUST include supporting sources using hyperlinks. If none exist, erase the sub section or rewrite it to be a part of the previous section",
+    "The report MUST be written in the same language as the query asked by the user"
+  ],
+  "verbose": true
+}

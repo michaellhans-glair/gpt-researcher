@@ -323,6 +323,7 @@ class GPTResearcher:
         await self._log_event("research", step="research_completed", details={
             "context_length": len(self.context)
         })
+        print(self.context)
         return self.context
 
     async def _handle_deep_research(self, on_progress=None):

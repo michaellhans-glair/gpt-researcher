@@ -1,4 +1,5 @@
 import asyncio
+import json
 from typing import List, Dict, Optional, Set
 
 from ..context.compression import ContextCompressor, WrittenContentCompressor, VectorstoreCompressor
@@ -12,6 +13,7 @@ class ContextManager:
         self.researcher = researcher
 
     async def get_similar_content_by_query(self, query, pages):
+        print(json.dumps(pages, indent=2))
         if self.researcher.verbose:
             await stream_output(
                 "logs",
