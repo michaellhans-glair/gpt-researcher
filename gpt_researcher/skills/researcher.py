@@ -2,7 +2,6 @@ import asyncio
 import random
 import logging
 import os
-import json
 from ..actions.utils import stream_output
 from ..actions.query_processing import plan_research_outline, get_search_results
 from ..document import DocumentLoader, OnlineDocumentLoader, LangChainDocumentLoader
@@ -38,7 +37,6 @@ class ResearchConductor:
         )
 
         search_results = await get_search_results(query, self.researcher.retrievers[0], query_domains, researcher=self.researcher)
-        print(json.dumps(search_results, indent=2))
         self.logger.info(f"Initial search results obtained: {len(search_results)} results")
 
         await stream_output(
