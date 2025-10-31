@@ -4,7 +4,7 @@ import os
 import uuid
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from multi_agents.agents import ChiefEditorAgent
+from multi_agents.agents import GeminiChiefEditorAgent
 import asyncio
 import json
 from gpt_researcher.utils.enum import Tone
@@ -41,7 +41,7 @@ async def run_research_task(query, websocket=None, stream_output=None, tone=Tone
     task = open_task()
     task["query"] = query
 
-    chief_editor = ChiefEditorAgent(task, websocket, stream_output, tone, headers)
+    chief_editor = GeminiChiefEditorAgent(task, websocket, stream_output, tone, headers)
     research_report = await chief_editor.run_research_task()
 
     if websocket and stream_output:
@@ -52,7 +52,7 @@ async def run_research_task(query, websocket=None, stream_output=None, tone=Tone
 async def main():
     task = open_task()
 
-    chief_editor = ChiefEditorAgent(task)
+    chief_editor = GeminiChiefEditorAgent(task)
     research_report = await chief_editor.run_research_task(task_id=uuid.uuid4())
 
     return research_report
