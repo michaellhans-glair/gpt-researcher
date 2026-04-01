@@ -1,10 +1,10 @@
 {
   "python_version": "3.11",
   "dependencies": [
-    "./multi_agents"
+    "."
   ],
   "graphs": {
-    "agent": "./smart_search_agents/agent.py:graph"
+    "agent": "./agent.py:graph"
   },
   "env": ".env"
-}
+} 
